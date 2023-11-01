@@ -1,5 +1,4 @@
-#ifndef RRGLWIDGET_H
-#define RRGLWIDGET_H
+#pragma once
 
 #include "stlfileloader.h"
 #include <QGLWidget>
@@ -88,4 +87,3 @@ public:
   int yTran = 0;         // 界面显示Y位置
   QPoint lastPos;
 };
-#endif // RRGLWIDGET_H

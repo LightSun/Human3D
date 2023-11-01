@@ -70,7 +70,7 @@ public:
    * @brief getNormal  获取法向量
    * @return
    */
-  QVector3D getNormal();
+  QVector3D& getNormal();
   /**
    * @brief reset 重置参数
    */

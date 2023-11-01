@@ -137,6 +137,11 @@ void RRGLWidget::setZoom(int zoom) {
   updateGL();
 }
 
+//镜面辅助颜色
+//h7:    glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL, GL_SEPARATE_SPECULAR_COLOR);
+//      执行纹理贴图是才有用，可使效果逼真，其原理是：把镜面光从主颜色中抽离出来，在纹理贴图后，再把镜面光加进去
+//恢复默认：   glLightModeli(GL_LIGHT_MODEL_COLOR_CONTROL, GL_SINGLE_COLOR);
+
 void RRGLWidget::initializeGL() {
   //用来初始化这个OpenGL窗口部件的，可以在里面设定一些有关选项
   GLfloat ambientLight[] = {0.7, 0.7, 0.7, 1.0}; //光源环境光强度数组
@@ -148,7 +153,10 @@ void RRGLWidget::initializeGL() {
   glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight); //设置0号光源的散射光属性
   glLightfv(GL_LIGHT0, GL_SPECULAR,
             specularLight); //设置0号光源的镜面反射光属性
-  glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 1.0);
+
+  //glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 1.0); //ok双面光照
+  glLightModeli(GL_LIGHT_MODEL_TWO_SIDE, GL_TRUE);//双面光照
+
   glLightfv(GL_LIGHT0, GL_POSITION, positionLight); //设置0号光源的位置属性
 
   glEnable(GL_LIGHTING);   //启用光照

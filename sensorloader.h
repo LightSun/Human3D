@@ -1,5 +1,4 @@
-#ifndef SENSORLOADER_H
-#define SENSORLOADER_H
+#pragma once
 
 #include <QList>
 #include <QVariant>
@@ -36,4 +35,3 @@ private:
     bool isWork = true;
 };
 
-#endif // SENSORLOADER_H

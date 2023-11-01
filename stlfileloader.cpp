@@ -80,12 +80,11 @@ void STLFileLoader::loadBinaryStl(QString filename) {
 }
 
 void STLFileLoader::draw() {
-  QList<STLTriangle> triangles = model;
-  QVector3D normal;
+  QList<STLTriangle>& triangles = model;
   QVector3D vertex;
   glBegin(GL_TRIANGLES); // 绘制一个或多个三角形
   foreach (STLTriangle tri, triangles) {
-    normal = tri.getNormal();
+    QVector3D& normal = tri.getNormal();
     glNormal3f(mRatio * normal.x(), mRatio * normal.y(), mRatio * normal.z());
     for (size_t j = 0; j < 3; ++j) {
       vertex = tri.getVertex(j);
@@ -115,7 +114,7 @@ void STLTriangle::setNormal(float nx, float ny, float nz) {
   n = QVector3D(nx, ny, nz);
 }
 
-QVector3D STLTriangle::getNormal() { return n; }
+QVector3D& STLTriangle::getNormal() { return n; }
 
 void STLTriangle::reset() {
   n = QVector3D(0.f, 0.f, 0.f);

@@ -4,7 +4,7 @@
 HumanGL::HumanGL(QWidget *parent)
     :RRGLWidget(parent)
 {
-    QString root = "./STLFile/human/";
+    QString root = "/home/heaven7/heaven7/study/github/mine_clone/Human3D/bin/STLFile/human/";
     model.head = new STLFileLoader(root + "头.STL", 10);
 
     model.neck1 = new STLFileLoader(root + "脖子1.STL", 10);

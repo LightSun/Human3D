@@ -7,6 +7,7 @@
 #include <QVBoxLayout>
 #include <QStyleFactory>
 #include <QFileDialog>
+#include <QStyle>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent), ui(new Ui::MainWindow) {

@@ -1,6 +1,7 @@
 #include "sensorloader.h"
 #include <QDebug>
 #include <QThread>
+#include <QFile>
 
 SensorLoader::SensorLoader()
 {
