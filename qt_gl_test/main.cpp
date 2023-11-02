@@ -8,8 +8,9 @@ int main(int argc, char* argv[]){
                    "Human3D/qt_gl_test/res/plot.csv";
 
     PointCloudOpenGLWidget w;
+    //w.loadCsvFile(file);
+    w.loadTestData();
     w.resize(800, 600);
-    w.loadCsvFile(file);
     w.show();
     return app.exec();
 }

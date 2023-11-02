@@ -17,6 +17,7 @@ public:
     ~PointCloudOpenGLWidget();
     void updatePoints(const QVector<QVector3D> &points);
     void loadCsvFile(const QString &path);
+    void loadTestData();
 
 protected:
     void initializeGL() override;

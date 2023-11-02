@@ -35,7 +35,7 @@ PointCloudOpenGLWidget::~PointCloudOpenGLWidget()
 void PointCloudOpenGLWidget::updatePoints(const QVector<QVector3D> &points)
 {
     m_pointData.clear();
-    for(auto vector3D : points)
+    for(auto& vector3D : points)
     {
         m_pointData.push_back(vector3D.x());
         m_pointData.push_back(vector3D.y());
@@ -44,6 +44,15 @@ void PointCloudOpenGLWidget::updatePoints(const QVector<QVector3D> &points)
     }
 }
 
+void PointCloudOpenGLWidget::loadTestData(){
+    for(int i = 0 ; i < 1000 ; i ++){
+        auto p = (i + 1) / 2000 + 0.5;
+        m_pointData.push_back(p);
+        m_pointData.push_back(1 - p);
+        m_pointData.push_back(1 - p);
+        m_pointData.push_back(1);
+    }
+}
 void PointCloudOpenGLWidget::loadCsvFile(const QString &path)
 {
     m_pointData.clear();
