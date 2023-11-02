@@ -92,7 +92,7 @@ void RRGLWidget::setupColor(int r, int g, int b) {
    * 参数1的取值可以是GL_FRONT、GL_BACK或GL_FRONT_AND_BACK，指出材质属性将应用于物体的哪面
    * 参数2指出要设置的哪种材质属性,GL_AMBIENT_AND_DIFFUSE材质的环境颜色和散射颜色
    */
-  GLfloat color[] = {r / 255.0, g / 255.0, b / 255.0};
+  GLfloat color[] = {r / 255.0f, g / 255.0f, b / 255.0f, 1.f};
   glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
 }
 
