@@ -9,7 +9,7 @@ set(CMAKE_AUTORCC ON)
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#include_directories(./)
+#include_directories(GLTools/include)
 
 find_package(Qt5OpenGL)
 find_package(Qt5 COMPONENTS Core Widgets OpenGL LinguistTools REQUIRED)
@@ -29,7 +29,9 @@ add_executable(gltest
 target_link_libraries(gltest PRIVATE ${QT_OPENGL_DEPS})
 
 ##
-add_subdirectory(human3d/)
+add_subdirectory(GLTools)
+#add_subdirectory(human3d/)
+add_subdirectory(qopenglwidget_test/)
 add_subdirectory(3dviewer/)
 
 

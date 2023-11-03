@@ -28,8 +28,13 @@ public:
 
     void drawGL() override;
 
+protected:
+   //void paintGL() override;
+    void onInitGL() override;
+
 private:
     void draw3dModel();
+    void drawTest();
 
 private:
     Vec3F m_wholeAngle;
