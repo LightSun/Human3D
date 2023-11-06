@@ -17,23 +17,6 @@ BaseGLWidget::~BaseGLWidget() {}
  
 void BaseGLWidget::initializeGL()
 {
-    //用来初始化这个OpenGL窗口部件的，可以在里面设定一些有关选项
-    GLfloat ambientLight[] = {0.7f, 0.7f, 0.7f, 1.0f}; //光源环境光强度数组
-    GLfloat diffuseLight[] = {0.7f, 0.8f, 0.8f, 1.0f}; //光源散射光强度数组
-    GLfloat specularLight[] = {0.4f, 0.4f, 0.4f, 1.0f}; //光源镜面反射光强度数组
-    GLfloat positionLight[] = {20.0f, 20.0f, 20.0f, 0.0f}; //光源位置数组
- 
-    glLightfv(GL_LIGHT0, GL_AMBIENT, ambientLight); //设置0号光源的环境光属性
-    glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuseLight); //设置0号光源的散射光属性
-    glLightfv(GL_LIGHT0, GL_SPECULAR, specularLight); //设置0号光源的镜面反射光属性
-    glLightModelf(GL_LIGHT_MODEL_TWO_SIDE, 1.0);
-    glLightfv(GL_LIGHT0, GL_POSITION, positionLight); //设置0号光源的位置属性
- 
-    glEnable(GL_LIGHTING);   //启用光照
-    glEnable(GL_LIGHT0);     //打开光源
-    glEnable(GL_DEPTH_TEST); //隐藏表面消除
-    glEnable(GL_NORMALIZE);
- 
     glClearColor(0.0, 0.0, 0.0, 1.0);
 }
  
@@ -65,6 +48,14 @@ void BaseGLWidget::resizeGL(int w, int h)
     glTranslated(0.0, 0.0, -40.0);
 }
  
+void BaseGLWidget::setupColor(float r, float g, float b, float a) {
+  /*
+   * 参数1的取值可以是GL_FRONT、GL_BACK或GL_FRONT_AND_BACK，指出材质属性将应用于物体的哪面
+   * 参数2指出要设置的哪种材质属性,GL_AMBIENT_AND_DIFFUSE材质的环境颜色和散射颜色
+   */
+  GLfloat color[] = {r, g, b, a};
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
+}
 void BaseGLWidget::mousePressEvent(QMouseEvent *event)
 {
     lastPos = event->pos();

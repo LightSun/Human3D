@@ -32,6 +32,8 @@ protected:
     virtual void drawCooraxis(float length);
     virtual unsigned int drawPointdata(std::vector<float> &pointVertexs);
 
+    void setupColor(float r, float g, float b, float a = 1.0f);
+
 protected:
     QOpenGLShaderProgram m_shaderProgramMesh;
     QOpenGLShaderProgram m_shaderProgramAxis;

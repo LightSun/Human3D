@@ -139,14 +139,12 @@ bool STLTriangle::checkVertexIndex(int index){
 namespace h7_3d {
 struct _STLFileLoader_ctx{
     GLBatch batch;
-    std::vector<float> normals;
-    std::vector<float> vertexs;
+    std::vector<float> vec_ver_normal;
 
     void loadTextStl(QString filename, float ratio) {
       qDebug() << "load text file:" << filename;
-      int expect_size = 1024;
-      normals.reserve(expect_size * 9);
-      vertexs.reserve(expect_size * 9);
+      std::vector<float> normals;
+      vec_ver_normal.reserve(1024 * 6);
       QFile file(filename);
       if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
             while (!file.atEnd()) {
@@ -162,14 +160,17 @@ struct _STLFileLoader_ctx{
                       normals.insert(normals.end(), xyz);
                   }
                   if (words[0] == "vertex") {
-                      vertexs.insert(vertexs.end(), {ratio *words[1].toFloat(),
+                      vec_ver_normal.insert(vec_ver_normal.end(), {ratio *words[1].toFloat(),
                                                      ratio *words[2].toFloat(),
                                                      ratio *words[3].toFloat()});
                   }
                   if (words[0] == "endloop") {
                       //check vertex. normals.
-                      Q_ASSERT(vertexs.size() % 3 == 0);
-                      //Q_ASSERT(vertexs.size() / 3 == normals.size());
+                      Q_ASSERT(normals.size() % 3 == 0);
+                      vec_ver_normal.insert(vec_ver_normal.end(),
+                                            normals.begin(), normals.end());
+                      normals.clear();
+                      Q_ASSERT(vec_ver_normal.size() % 6 == 0);
                   }
             }
             file.close();
@@ -178,16 +179,25 @@ struct _STLFileLoader_ctx{
       }
     }
 
-    void initOnGL(Base3dWidget* w){
-        batch.ptr_func = w;
-        batch.Begin(GL_TRIANGLES, vertexs.size() / 9);
-        batch.CopyVertexData3f(vertexs.data());
-        batch.CopyNormalDataf(normals.data());
-        batch.End();
+    void initOnGL(QOpenGLFunctions_3_3_Core* w){
+        //18 -> 1 triangles, 3 vertex, 3 normal
+        //x, y, z, normal1, nor2, nor3
+        batch.setQTOpenGL((QOpenGLFunctions_3_3_Core*)w);
+        batch.begin(vec_ver_normal.size() / 6 );
+        batch.bindVertexNormal(vec_ver_normal.data());
+//        batch.ptr_func = w;
+//        batch.Begin(GL_TRIANGLES, vertexs.size() / 9);
+//        batch.CopyVertexData3f(vertexs.data());
+//        batch.CopyNormalDataf(normals.data());
+//        batch.End();
     }
 
     void draw(){
-        batch.Draw();
+       // batch.Draw();
+        batch.drawTriangles();
+    }
+    void destroy(){
+        batch.destroy();
     }
 };
 }
@@ -230,6 +240,9 @@ void STLFileLoader::loadStl(QString filename) {
 void STLFileLoader::draw()const{
     m_ptr->draw();
 }
-void STLFileLoader::onInitGL(Base3dWidget* w){
+void STLFileLoader::destroy(){
+    m_ptr->destroy();
+}
+void STLFileLoader::onInitGL(QOpenGLFunctions_3_3_Core* w){
     m_ptr->initOnGL(w);
 }

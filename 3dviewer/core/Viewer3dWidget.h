@@ -31,6 +31,7 @@ public:
 protected:
    //void paintGL() override;
     void onInitGL() override;
+    void onDestroy() override;
 
 private:
     void draw3dModel();

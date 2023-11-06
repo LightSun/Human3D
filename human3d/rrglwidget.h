@@ -3,6 +3,7 @@
 #include "stlfileloader.h"
 #include <QGLWidget>
 #include <QWidget>
+#include <QOpenGLWidget>
 
 /**
  * @brief The RRGLWidget class 基类，提供了鼠标旋转、方法缩小、平移、网格、坐标系等基本功能

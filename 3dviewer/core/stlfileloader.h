@@ -3,6 +3,8 @@
 #include <QList>
 #include <QVector3D>
 
+class QOpenGLFunctions_3_3_Core;
+
 
 namespace h7_3d {
 class STLTriangle;
@@ -45,9 +47,10 @@ public:
   void loadTextStl(QString filename);
   void loadBinaryStl(QString filename);
 
-  void onInitGL(Base3dWidget* );
+  void onInitGL(QOpenGLFunctions_3_3_Core* );
   void draw()const;
 
+  void destroy();
 private:
   _STLFileLoader_ctx* m_ptr {nullptr};
   float m_ratio = 1;

@@ -29,10 +29,11 @@ add_executable(gltest
 target_link_libraries(gltest PRIVATE ${QT_OPENGL_DEPS})
 
 ##
-add_subdirectory(GLTools)
+#add_subdirectory(GLTools)
 #add_subdirectory(human3d/)
 add_subdirectory(qopenglwidget_test/)
 add_subdirectory(3dviewer/)
+add_subdirectory(qt_gl_test2/)
 
 
 

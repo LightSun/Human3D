@@ -8,7 +8,7 @@
 #include <QOpenGLShaderProgram>
 #include <QOpenGLTexture>
 
-//#define USE_OLD_GL
+//#define USE_OLD_GL 1
 
 namespace h7_3d {
 
@@ -79,6 +79,7 @@ protected:
   void resizeGL(int w, int h) override;
 
   virtual void onInitGL(){};
+  virtual void onDestroy(){};
 
   void mousePressEvent(QMouseEvent *event) override;
   void mouseMoveEvent(QMouseEvent *event) override;

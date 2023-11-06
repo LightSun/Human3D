@@ -44,13 +44,24 @@ void PointCloudOpenGLWidget::updatePoints(const QVector<QVector3D> &points)
     }
 }
 
+void PointCloudOpenGLWidget::setupColor(float r, float g, float b, float a) {
+  /*
+   * 参数1的取值可以是GL_FRONT、GL_BACK或GL_FRONT_AND_BACK，指出材质属性将应用于物体的哪面
+   * 参数2指出要设置的哪种材质属性,GL_AMBIENT_AND_DIFFUSE材质的环境颜色和散射颜色
+   */
+  GLfloat color[] = {r, g, b, a};
+  glMaterialfv(GL_FRONT, GL_AMBIENT_AND_DIFFUSE, color);
+}
 void PointCloudOpenGLWidget::loadTestData(){
+    //x, y , z. r, g b
     for(int i = 0 ; i < 1000 ; i ++){
         auto p = (i + 1) / 2000 + 0.5;
+        m_pointData.push_back(1 - p);
+        m_pointData.push_back((1 - p / 2));
         m_pointData.push_back(p);
-        m_pointData.push_back(1 - p);
-        m_pointData.push_back(1 - p);
         m_pointData.push_back(1);
+        m_pointData.push_back(0);
+        m_pointData.push_back(0);
     }
 }
 void PointCloudOpenGLWidget::loadCsvFile(const QString &path)
@@ -128,7 +139,9 @@ void PointCloudOpenGLWidget::paintGL()
     projection.perspective(m_zoom, (float)width() / (float)height(), 1.0f, 100.0f);
 
     // eye：摄像机位置  center：摄像机看的点位 up：摄像机上方的朝向
-    view.lookAt(QVector3D(0.0, 0.0, 50.0), QVector3D(0.0, 0.0, 1.0), QVector3D(0.0, 1.0, 0.0));
+    view.lookAt(QVector3D(0.0, 0.0, 50.0),
+                QVector3D(0.0, 0.0, 1.0),
+                QVector3D(0.0, 1.0, 0.0));
 
     model.translate(m_xTrans, m_yTrans, 0.0);
     model.rotate(m_xRotate, 1.0, 0.0, 0.0);
@@ -161,11 +174,12 @@ void PointCloudOpenGLWidget::paintGL()
     glLineWidth(5.0f);
     glDrawArrays(GL_LINES, 0, 6);
 
+    //setupColor(1, 0, 0, 1);
     //画点云
     m_shaderProgramPoint.bind();
     glBindVertexArray(m_VAO_Point);
-    glPointSize(1.0f);
-    glDrawArrays(GL_POINTS, 0, m_pointCount);
+    //glPointSize(1.0f);
+    glDrawArrays(GL_TRIANGLES, 0, m_pointCount/3);
 }
 
 void PointCloudOpenGLWidget::resizeGL(int width, int height)
@@ -319,14 +333,15 @@ unsigned int PointCloudOpenGLWidget::drawPointdata(std::vector<float> &pointVert
     glBindVertexArray(m_VAO_Point);
 
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO_Point);
-    glBufferData(GL_ARRAY_BUFFER, pointVertexs.size() * sizeof(float), &pointVertexs[0], GL_STATIC_DRAW);
-
+    glBufferData(GL_ARRAY_BUFFER, pointVertexs.size() * sizeof(float),
+                 &pointVertexs[0], GL_STATIC_DRAW);
+//GL_TEXTURE_COORD_ARRAY
     // 位置属性
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 4 * sizeof(float), (void *)0);
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)0);
     glEnableVertexAttribArray(0);
 
     // 颜色属性
-    glVertexAttribPointer(1, 1, GL_FLOAT, GL_FALSE, 4 * sizeof(float),
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
                           (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
@@ -334,7 +349,7 @@ unsigned int PointCloudOpenGLWidget::drawPointdata(std::vector<float> &pointVert
 
     glBindVertexArray(0);
 
-    point_count = (unsigned int)pointVertexs.size() / 4;
+    point_count = (unsigned int)pointVertexs.size() / 6;
 
     return point_count;
 }

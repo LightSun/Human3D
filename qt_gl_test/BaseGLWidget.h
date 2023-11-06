@@ -12,6 +12,9 @@ class BaseGLWidget : public QGLWidget
 public:
     BaseGLWidget(QWidget *parent = 0);
     ~BaseGLWidget();
+
+
+    void setupColor(float r, float g, float b, float a = 1.0f);
  
 protected:
     void initializeGL() override;

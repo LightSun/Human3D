@@ -9,8 +9,9 @@ Base3dWidget::Base3dWidget(QWidget *parent) : _QSuperGLWidget(parent) {
 }
 
 Base3dWidget::~Base3dWidget() {
-    //makeCurrent();
-    //doneCurrent();
+    makeCurrent();
+    onDestroy();
+    doneCurrent();
 }
 
 void Base3dWidget::drawGrid() {
@@ -152,7 +153,6 @@ void Base3dWidget::initializeGL() {
 #ifndef USE_OLD_GL
   initializeOpenGLFunctions();
 #endif
-  onInitGL();
   //用来初始化这个OpenGL窗口部件的，可以在里面设定一些有关选项
   GLfloat ambientLight[] = {0.7, 0.7, 0.7, 1.0}; //光源环境光强度数组
   GLfloat diffuseLight[] = {0.7, 0.8, 0.8, 1.0}; //光源散射光强度数组
@@ -175,10 +175,17 @@ void Base3dWidget::initializeGL() {
   glEnable(GL_NORMALIZE);
 
   glClearColor(0.0, 0.0, 0.0, 1.0);
+
+  onInitGL();
 }
 
 void Base3dWidget::paintGL() {
     //called every update
+//    QPainter painter;
+//    painter.begin(this);
+
+//    painter.beginNativePainting();
+
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT); /* 清除屏幕和深度缓存 */
     glPushMatrix();
     glTranslated(0, 0, z_zoom);
@@ -189,6 +196,9 @@ void Base3dWidget::paintGL() {
     glRotated(+90.0, 1.0, 0.0, 0.0);
     drawGL();
     glPopMatrix();
+    //
+    //painter.endNativePainting();
+    //painter.end();
 }
 
 void Base3dWidget::resizeGL(int w, int h) {

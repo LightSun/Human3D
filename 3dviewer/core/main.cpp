@@ -1,6 +1,7 @@
 
 #include <QApplication>
 #include "Viewer3dWidget.h"
+#include "Test3dWidget.h"
 
 using namespace h7_3d;
 
@@ -11,15 +12,16 @@ int main(int argc, char* argv[]){
     QString stl = dir + "/A右大腿.stl";
 
     QString stl2 = "/home/heaven7/heaven7/work/IAS/debug_out/mvh_thy_nodule.stl";
-    Module3D m;
-    m.loader.setRatio(10);
-    m.loader.loadStl(stl);
-    m.setRgbColor(1, 0, 0);
+//    Module3D m;
+//    m.loader.setRatio(10);
+//    m.loader.loadStl(stl);
+//    m.setRgbColor(1, 0, 0);
 
-    Viewer3dWidget v3w;
+    Test3dWidget v3w;
+    v3w.loadStl(stl, 1);
     v3w.resize(800, 600);
    // v3w.setWholeRotateAngle()
-    v3w.addModule3D(m);
+   // v3w.addModule3D(m);
     v3w.show();
 
     return app.exec();

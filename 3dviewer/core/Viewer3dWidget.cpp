@@ -7,7 +7,7 @@ Viewer3dWidget::Viewer3dWidget(QWidget *parent):Base3dWidget(parent)
 void Viewer3dWidget::drawGL(){
     drawGrid();
     drawCoordinates();
-    //draw3dModel();
+    draw3dModel();
     //drawTest();
 }
 void Viewer3dWidget::onInitGL(){
@@ -19,6 +19,18 @@ void Viewer3dWidget::onInitGL(){
         auto& m = (Module3DBatch&)_m;
         for(int i = 0, size = m.loaders.size() ; i < size ; ++i){
             m.loaders.at(i).onInitGL(this);
+        }
+    }
+}
+void Viewer3dWidget::onDestroy(){
+    foreach(CModule3D _m, m_models) {
+        auto& m = (Module3D&)_m;
+        m.loader.destroy();
+    }
+    foreach(CModule3DBatch _m, m_batches) {
+        auto& m = (Module3DBatch&)_m;
+        for(int i = 0, size = m.loaders.size() ; i < size ; ++i){
+            m.loaders.at(i).destroy();
         }
     }
 }
