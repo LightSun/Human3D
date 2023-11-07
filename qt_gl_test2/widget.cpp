@@ -26,13 +26,14 @@ void Widget::slot_choose_model()
 
     if (file_name.isEmpty())
     {
-        ui->label_log->setText("File is not existed!");
-        return;
+        ui->label_log->setText("File is not existed, use default.");
+        QString dir = "/home/heaven7/heaven7/study/github/mine_clone/Human3D/bin/STLFile/human";
+        file_name = dir + "/A右大腿.stl";
     }
 
-    QObjLoad objLoader_;
+    D3ModelLoader objLoader_;
     QVector<float> vPoints_;
-    if (!objLoader_.load(file_name, vPoints_))
+    if (!objLoader_.loadStl(file_name, vPoints_))
     {
         ui->label_log->setText("Load model file failed!");
         return;
@@ -46,7 +47,8 @@ void Widget::slot_choose_model()
         return;
     }
 
-    m_glWin = new GLWindow(vPoints_);
+    m_glWin = new GLW(vPoints_);
+    m_glWin->resize(800, 600);
     ui->verticalLayout_model->addWidget(m_glWin);
     connect(ui->horizontalSlider_X, SIGNAL(valueChanged(int)), m_glWin, SLOT(slot_cam_X(int)));
     connect(ui->horizontalSlider_Y, SIGNAL(valueChanged(int)), m_glWin, SLOT(slot_cam_Y(int)));

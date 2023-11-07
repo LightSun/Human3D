@@ -54,14 +54,19 @@ void PointCloudOpenGLWidget::setupColor(float r, float g, float b, float a) {
 }
 void PointCloudOpenGLWidget::loadTestData(){
     //x, y , z. r, g b
-    for(int i = 0 ; i < 1000 ; i ++){
+//    const float vertices[] = {
+//        -0.5f, -0.5f, 0.0f, // left
+//         0.5f, -0.5f, 0.0f, // right
+//         0.0f,  0.5f, 0.0f  // top
+//    };
+    for(int i = 0 ; i < 9 ; i ++){
         auto p = (i + 1) / 2000 + 0.5;
-        m_pointData.push_back(1 - p);
-        m_pointData.push_back((1 - p / 2));
-        m_pointData.push_back(p);
+        m_pointData.push_back(i + 100);
+        m_pointData.push_back(i + 100);
+        m_pointData.push_back(i + 100);
         m_pointData.push_back(1);
-        m_pointData.push_back(0);
-        m_pointData.push_back(0);
+       // m_pointData.push_back(0);
+      //  m_pointData.push_back(0);
     }
 }
 void PointCloudOpenGLWidget::loadCsvFile(const QString &path)
@@ -179,7 +184,7 @@ void PointCloudOpenGLWidget::paintGL()
     m_shaderProgramPoint.bind();
     glBindVertexArray(m_VAO_Point);
     //glPointSize(1.0f);
-    glDrawArrays(GL_TRIANGLES, 0, m_pointCount/3);
+    glDrawArrays(GL_TRIANGLES, 0, m_pointCount);
 }
 
 void PointCloudOpenGLWidget::resizeGL(int width, int height)
@@ -315,7 +320,8 @@ void PointCloudOpenGLWidget::drawCooraxis(float length)
     glEnableVertexAttribArray(0);
 
     // 颜色属性
-    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float), (void *)(3 * sizeof(float)));
+    glVertexAttribPointer(1, 3, GL_FLOAT, GL_FALSE, 6 * sizeof(float),
+                          (void *)(3 * sizeof(float)));
     glEnableVertexAttribArray(1);
 
     glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -331,7 +337,6 @@ unsigned int PointCloudOpenGLWidget::drawPointdata(std::vector<float> &pointVert
     glGenBuffers(1, &m_VBO_Point);
 
     glBindVertexArray(m_VAO_Point);
-
     glBindBuffer(GL_ARRAY_BUFFER, m_VBO_Point);
     glBufferData(GL_ARRAY_BUFFER, pointVertexs.size() * sizeof(float),
                  &pointVertexs[0], GL_STATIC_DRAW);
@@ -349,7 +354,7 @@ unsigned int PointCloudOpenGLWidget::drawPointdata(std::vector<float> &pointVert
 
     glBindVertexArray(0);
 
-    point_count = (unsigned int)pointVertexs.size() / 6;
+    point_count = (unsigned int)pointVertexs.size() / 2;
 
     return point_count;
 }

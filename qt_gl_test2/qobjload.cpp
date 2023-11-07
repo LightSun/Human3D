@@ -4,9 +4,20 @@
 #include <QDataStream>
 #include <algorithm>
 
-bool QObjLoad::load(QString fileName, QVector<float>& vPoints)
+/**
+v 几何体顶点 (Geometric vertices)
+
+vt 贴图坐标点 (Texture vertices)
+
+vn 顶点法线 (Vertex normals)
+
+vp 参数空格顶点 (Parameter space vertices)
+f  face
+ */
+bool D3ModelLoader::loadObj(QString fileName, QVector<float>& vPoints)
 {
-    if (fileName.mid(fileName.lastIndexOf('.')) != ".obj" && fileName.mid(fileName.lastIndexOf('.')) != ".OBJ")
+    if (fileName.mid(fileName.lastIndexOf('.')) != ".obj"
+            && fileName.mid(fileName.lastIndexOf('.')) != ".OBJ")
     {
         qDebug() << "file is not a obj file.";
         return false;
@@ -76,4 +87,41 @@ bool QObjLoad::load(QString fileName, QVector<float>& vPoints)
     facesIndexs.clear();
 
     return true;
+}
+
+bool D3ModelLoader::loadStl(QString filename, QVector<float>& vPoints){
+    QFile file(filename);
+
+    if (file.open(QIODevice::ReadOnly | QIODevice::Text)) {
+       while (!file.atEnd()) {
+         QString line =
+             file.readLine().trimmed(); // trimmed去除了开头和结尾的空白字符串
+         QStringList words = line.split(' ', QString::SkipEmptyParts);
+         if (words[0] == "facet") {
+//           triangle.clear();
+//           tSTLTriangle.reset();
+//           tSTLTriangle.setNormal(words[2].toFloat(), words[3].toFloat(),
+//                                  words[4].toFloat());
+         }
+         if (words[0] == "vertex") {
+//           triangle.append(QVector3D(words[1].toFloat(), words[2].toFloat(),
+//                                     words[3].toFloat()));
+             vPoints << words[1].toFloat();
+             vPoints << words[2].toFloat();
+             vPoints << words[3].toFloat();
+         }
+         if (words[0] == "endloop") {
+//           if (triangle.length() == 3) {
+//             for (size_t i = 0; i < 3; ++i) {
+//               tSTLTriangle.setVertex(i, triangle[i]);
+//             }
+//             model.append(tSTLTriangle);
+//           }
+         }
+       }
+       file.close();
+       return true;
+     }
+    qDebug() << "open" << filename << "failed";
+    return false;
 }
